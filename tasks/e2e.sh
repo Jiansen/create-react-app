@@ -45,6 +45,9 @@ cd ..
 # If you run it locally, you'll need to `git checkout -- package.json`.
 perl -i -p0e 's/bundledDependencies.*?]/bundledDependencies": []/s' package.json
 
+# TODO: tasks/pack.sh should have +x permissions
+chmod a+x tasks/pack.sh
+
 # Pack react-scripts
 npm install
 scripts_path=$PWD/`tasks/pack.sh`
