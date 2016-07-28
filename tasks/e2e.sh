@@ -47,7 +47,7 @@ perl -i -p0e 's/bundledDependencies.*?]/bundledDependencies": []/s' package.json
 
 # Pack react-scripts
 npm install
-scripts_path=$PWD/`npm pack`
+scripts_path=$PWD/`tasks/pack.sh`
 
 # lint
 ./node_modules/.bin/eslint --ignore-path .gitignore ./
