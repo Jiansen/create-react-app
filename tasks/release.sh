@@ -41,6 +41,12 @@ rm -rf node_modules/fsevents
 # We will revert package.json back after release to avoid doing it every time
 node ./node_modules/.bin/bundle-deps
 
+# This modifies ./config/index.js to
+# -- hide the --debug-template
+# -- only expose production configuration to users
+# We will revert ./config/index.js in this development repository after release
+cp ./config/index.prod.js ./config/index.js
+
 # Go!
 npm publish "$@"
 

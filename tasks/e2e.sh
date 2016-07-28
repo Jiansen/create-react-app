@@ -47,7 +47,7 @@ perl -i -p0e 's/bundledDependencies.*?]/bundledDependencies": []/s' package.json
 
 # Pack react-scripts
 npm install
-scripts_path=$PWD/`npm pack`
+scripts_path=$PWD/`tasks/pack.sh`
 
 # lint
 ./node_modules/.bin/eslint --ignore-path .gitignore ./
@@ -72,31 +72,31 @@ temp_cli_path=`mktemp -d 2>/dev/null || mktemp -d -t 'temp_cli_path'`
 cd $temp_cli_path
 npm install $cli_path
 
-# Install the app in a temporary location
+echo "Install the app in a temporary location"
 temp_app_path=`mktemp -d 2>/dev/null || mktemp -d -t 'temp_app_path'`
 cd $temp_app_path
 node "$temp_cli_path"/node_modules/create-react-app/index.js --scripts-version=$scripts_path test-app
 cd test-app
 
-# Test the build
+echo "Test the build"
 npm run build
 
-# Check for expected output
+echo "Check for expected output"
 test -e build/*.html
 test -e build/*.js
 
-# Test the server
+echo "Test the server"
 npm start -- --smoke-test
 
-# Eject and test the build
+echo "Eject and test the build"
 echo yes | npm run eject
 npm run build
 
-# Check for expected output
+echo "After Eject: Check for expected output"
 test -e build/*.html
 test -e build/*.js
 
-# Test the server
+echo "After Eject: Test the server"
 npm start -- --smoke-test
 
 # Cleanup

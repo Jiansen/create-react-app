@@ -50,7 +50,7 @@ var argv = require('minimist')(process.argv.slice(2));
  *     Example of valid values:
  *     - a specific npm version: "0.22.0-rc1"
  *     - a .tgz archive from any npm repo: "https://registry.npmjs.org/react-scripts/-/react-scripts-0.20.0.tgz"
- *     - a package prepared with `npm pack`: "/Users/home/vjeux/create-react-app/react-scripts-0.22.0.tgz"
+ *     - a package prepared with `tasks/pack.sh`: "/Users/home/vjeux/create-react-app/react-scripts-0.22.0.tgz"
  */
 var commands = argv._;
 if (commands.length === 0) {

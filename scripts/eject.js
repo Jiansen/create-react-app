@@ -28,14 +28,12 @@ prompt(
   var ownPath = path.join(__dirname, '..');
   var appPath = path.join(ownPath, '..', '..');
   var files = [
-    path.join('config', 'babel.dev.js'),
     path.join('config', 'babel.prod.js'),
     path.join('config', 'flow', 'css.js.flow'),
     path.join('config', 'flow', 'file.js.flow'),
     path.join('config', 'eslint.js'),
     path.join('config', 'paths.js'),
     path.join('config', 'polyfills.js'),
-    path.join('config', 'webpack.config.dev.js'),
     path.join('config', 'webpack.config.prod.js'),
     path.join('scripts', 'build.js'),
     path.join('scripts', 'start.js'),
@@ -70,6 +68,8 @@ prompt(
       .replace(/^\/\*\*(\*(?!\/)|[^*])*\*\//, '')
       // Remove license header from AppleScript
       .replace(/^--.*\n/gm, '')
+      // Remove dead code on eject
+      .replace(/\/\/ Dead code on eject: start([\s\S]*?)\/\/ Dead code on eject: end/g, '')
       .trim() + '\n';
     fs.writeFileSync(path.join(appPath, file), content);
   });
