@@ -13,7 +13,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var url = require('url');
-var paths = require('./paths');
+var paths = require('./')('paths');
 
 var homepagePath = require(paths.appPackageJson).homepage;
 var publicPath = homepagePath ? url.parse(homepagePath).pathname : '/';
@@ -55,7 +55,7 @@ module.exports = {
         test: /\.js$/,
         include: paths.appSrc,
         loader: 'babel',
-        query: require('./babel.prod')
+        query: require('./')('babel')
       },
       {
         test: /\.css$/,

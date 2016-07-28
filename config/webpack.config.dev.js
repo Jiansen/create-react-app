@@ -11,7 +11,7 @@ var path = require('path');
 var autoprefixer = require('autoprefixer');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var paths = require('./paths');
+var paths = require('./')('paths');
 
 module.exports = {
   devtool: 'eval',
@@ -48,7 +48,7 @@ module.exports = {
         test: /\.js$/,
         include: paths.appSrc,
         loader: 'babel',
-        query: require('./babel.dev')
+        query: require('./')('babel')
       },
       {
         test: /\.css$/,
