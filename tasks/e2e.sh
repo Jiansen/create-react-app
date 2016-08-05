@@ -28,6 +28,27 @@ function handle_exit {
   exit
 }
 
+function smoke_test {
+  # TODO: how to kill the process
+  npm start | {
+    exit_code=0
+    while IFS= read -r line
+    do
+      # echo $line
+      if [ "$line" = "Compiled successfully!" ]; then
+        break
+      elif [ "$line" = "Compile Errors printed." ]; then
+        exit_code=1
+        break
+      elif [ "$line" = "Warnings printed." ]; then
+        exit_code=1
+        break
+      fi;
+    done
+    exit $exit_code
+  }
+}
+
 # Exit the script with a helpful error message when any error is encountered
 trap 'set +x; handle_error $LINENO $BASH_COMMAND' ERR
 
@@ -56,7 +77,8 @@ scripts_path=$PWD/`npm pack`
 ./node_modules/.bin/eslint --ignore-path .gitignore ./
 
 # Test local start command
-npm start -- --smoke-test
+# expect -c "spawn npm start -- --smoke-test; expect \"The app is running at http://localhost:3000/\" { close }"
+smoke_test
 
 # Test local build command
 npm run build
@@ -101,7 +123,7 @@ npm run test
 test -e src/__tests__/__snapshots__/App-test.js.snap
 
 # Test the server
-npm start -- --smoke-test
+smoke_test
 
 # Eject and test the build
 echo yes | npm run eject
@@ -118,7 +140,7 @@ npm run test
 test -e src/__tests__/__snapshots__/App-test.js.snap
 
 # Test the server
-npm start -- --smoke-test
+smoke_test
 
 # Cleanup
 cleanup

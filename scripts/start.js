@@ -26,20 +26,6 @@ var paths = require('../config/paths');
 var DEFAULT_PORT = process.env.PORT || 3000;
 var compiler;
 
-// TODO: hide this behind a flag and eliminate dead code on eject.
-// This shouldn't be exposed to the user.
-var handleCompile;
-var isSmokeTest = process.argv.some(arg => arg.indexOf('--smoke-test') > -1);
-if (isSmokeTest) {
-  handleCompile = function (err, stats) {
-    if (err || stats.hasErrors() || stats.hasWarnings()) {
-      process.exit(1);
-    } else {
-      process.exit(0);
-    }
-  };
-}
-
 // Some custom utilities to prettify Webpack output.
 // This is a little hacky.
 // It would be easier if webpack provided a rich error object.
@@ -73,9 +59,7 @@ function clearConsole() {
 }
 
 function setupCompiler(port) {
-  // "Compiler" is a low-level interface to Webpack.
-  // It lets us listen to some events and provide our own custom messages.
-  compiler = webpack(config, handleCompile);
+  compiler = webpack(config);
 
   // "invalid" event fires when you have changed a file, and Webpack is
   // recompiling a bundle. WebpackDevServer takes care to pause serving the
@@ -90,8 +74,8 @@ function setupCompiler(port) {
   // Whether or not you have warnings or errors, you will get this event.
   compiler.plugin('done', function(stats) {
     clearConsole();
-    var hasErrors = stats.hasErrors();
-    var hasWarnings = stats.hasWarnings();
+    var hasErrors = true;// stats.hasErrors();
+    var hasWarnings = true; //stats.hasWarnings();
     if (!hasErrors && !hasWarnings) {
       console.log(chalk.green('Compiled successfully!'));
       console.log();
@@ -128,6 +112,7 @@ function setupCompiler(port) {
         console.log(message);
         console.log();
       });
+      console.log(chalk.red('Compile Errors printed.'));
       // If errors exist, ignore warnings.
       return;
     }
@@ -142,6 +127,7 @@ function setupCompiler(port) {
       console.log('You may use special comments to disable some warnings.');
       console.log('Use ' + chalk.yellow('// eslint-disable-next-line') + ' to ignore the next line.');
       console.log('Use ' + chalk.yellow('/* eslint-disable */') + ' to ignore all warnings in a file.');
+      console.log(chalk.yellow('Warnings printed.'));
     }
   });
 }
