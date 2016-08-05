@@ -59,6 +59,8 @@ function clearConsole() {
 }
 
 function setupCompiler(port) {
+  // "Compiler" is a low-level interface to Webpack.
+  // It lets us listen to some events and provide our own custom messages.
   compiler = webpack(config);
 
   // "invalid" event fires when you have changed a file, and Webpack is
